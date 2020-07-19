@@ -17,7 +17,8 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.*
+import org.mockito.Mockito.doReturn
+import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
@@ -36,9 +37,6 @@ class MainActivityViewModelTest {
     private lateinit var responseObserver: Observer<ResponseMaster>
 
     @Mock
-    private lateinit var errorObserver: Observer<String>
-
-    @Mock
     private lateinit var messageStringIdObserver: Observer<Int>
 
     private lateinit var testScheduler: TestScheduler
@@ -47,9 +45,6 @@ class MainActivityViewModelTest {
 
     @Mock
     private lateinit var responseMaster: ResponseMaster
-
-    @Mock
-    private lateinit var responseItem: ResponseItem
 
     @Before
     fun setUp() {
@@ -62,9 +57,7 @@ class MainActivityViewModelTest {
             networkHelper,
             factsRepository
         )
-        
         mainActivityViewModel.responseData.observeForever(responseObserver)
-        mainActivityViewModel.errorData.observeForever(errorObserver)
     }
 
     @Test
@@ -79,7 +72,7 @@ class MainActivityViewModelTest {
     }
 
     @Test
-    fun `test get facts error`(){
+    fun `test get facts error`() {
         doReturn(false)
             .`when`(networkHelper)
             .isNetworkConnected()
@@ -88,7 +81,8 @@ class MainActivityViewModelTest {
     }
 
     @After
-    fun tearDown(){
+    fun tearDown() {
         mainActivityViewModel.responseData.removeObserver(responseObserver)
+        mainActivityViewModel.messageStringId.removeObserver(messageStringIdObserver)
     }
 }
