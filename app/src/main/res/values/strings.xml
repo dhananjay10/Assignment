@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">WiproAssignment</string>
+    <string name="network_error">No Network</string>
+    <string name="title_not_available">Title not available</string>
+    <string name="description_not_available">Description not available</string>
+    <string name="server_connection_error">Not able to connect, please retry again</string>
+    <string name="network_default_error">Something wrong happened, please retry again</string>
+</resources>
