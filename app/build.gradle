@@ -66,6 +66,12 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxandroid_version"
     implementation 'org.reactivestreams:reactive-streams:1.0.2'
 
+    //Database
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-rxjava2:$room_version"
+
+
     // UI Testing
     androidTestImplementation "androidx.test:runner:$test_runner_version"
     androidTestImplementation "androidx.test.ext:junit:$test_ext_runner_version"

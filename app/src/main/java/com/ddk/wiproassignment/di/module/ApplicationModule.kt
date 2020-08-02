@@ -2,6 +2,8 @@ package com.ddk.wiproassignment.di.module
 
 import android.app.Application
 import android.content.Context
+import androidx.room.Room
+import com.ddk.wiproassignment.data.local.DatabaseService
 import com.ddk.wiproassignment.di.ApplicationContext
 import com.ddk.wiproassignment.network.ApiClient
 import com.ddk.wiproassignment.network.ApiService
@@ -45,4 +47,14 @@ class ApplicationModule(private val application: ApplicationController) {
     @Provides
     fun provideNetworkHelper(): NetworkHelper =
         NetworkHelper(application)
+
+    @Singleton
+    @Provides
+    fun provideDatabaseService(): DatabaseService =
+        Room.databaseBuilder(
+            application,
+            DatabaseService::class.java,
+            "assignment_db"
+        ).build()
+
 }

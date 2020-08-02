@@ -60,6 +60,9 @@ ext{
     // Dagger
     dagger_version = '2.21'
 
+    //Database
+    room_version = '2.2.5'
+
     // Tests
     junit_version = '4.12'
     androidx_junit = '1.1.1'

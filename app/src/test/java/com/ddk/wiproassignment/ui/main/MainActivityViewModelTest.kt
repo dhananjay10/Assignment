@@ -1,10 +1,11 @@
 package com.ddk.wiproassignment.ui.main
 
+import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import com.ddk.wiproassignment.R
-import com.ddk.wiproassignment.data.ResponseItem
+import androidx.room.Room
 import com.ddk.wiproassignment.data.ResponseMaster
+import com.ddk.wiproassignment.data.local.DatabaseService
 import com.ddk.wiproassignment.data.repositories.FactsRepository
 import com.ddk.wiproassignment.util.rx.TestSchedulerProvider
 import com.ddk.wiproassignment.utils.network.NetworkHelper
@@ -21,7 +22,7 @@ import org.mockito.Mockito.doReturn
 import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
 
-@RunWith(MockitoJUnitRunner::class)
+@RunWith(MockitoJUnitRunner.Silent::class)
 class MainActivityViewModelTest {
 
     @get:Rule
@@ -46,16 +47,23 @@ class MainActivityViewModelTest {
     @Mock
     private lateinit var responseMaster: ResponseMaster
 
+    private lateinit var databaseService: DatabaseService
+
+    @Mock
+    private lateinit var context: Context
+
     @Before
     fun setUp() {
         val compositeDisposable = CompositeDisposable()
         testScheduler = TestScheduler()
         val testSchedulerProvider = TestSchedulerProvider(testScheduler)
+        databaseService = Room.inMemoryDatabaseBuilder(context, DatabaseService::class.java).build()
         mainActivityViewModel = MainActivityViewModel(
             testSchedulerProvider,
             compositeDisposable,
             networkHelper,
-            factsRepository
+            factsRepository,
+            databaseService
         )
         mainActivityViewModel.responseData.observeForever(responseObserver)
     }
@@ -76,8 +84,9 @@ class MainActivityViewModelTest {
         doReturn(false)
             .`when`(networkHelper)
             .isNetworkConnected()
-        mainActivityViewModel.getFacts()
-        assert(mainActivityViewModel.messageStringId.value == R.string.network_error)
+        mainActivityViewModel.getFactsFromCache()
+        testScheduler.triggerActions()
+        databaseService.factsDao().getAllFacts()
     }
 
     @After

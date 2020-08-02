@@ -2,6 +2,7 @@ package com.ddk.wiproassignment.di.component
 
 import android.app.Application
 import android.content.Context
+import com.ddk.wiproassignment.data.local.DatabaseService
 import com.ddk.wiproassignment.di.ApplicationContext
 import com.ddk.wiproassignment.di.module.ApplicationModule
 import com.ddk.wiproassignment.network.ApiService
@@ -30,4 +31,6 @@ interface ApplicationComponent {
     fun getSchedulerProvider(): SchedulerProvider
 
     fun getCompositeDisposable(): CompositeDisposable
+
+    fun getDatabaseService(): DatabaseService
 }
