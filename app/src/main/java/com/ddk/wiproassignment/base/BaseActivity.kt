@@ -27,9 +27,7 @@ abstract class BaseActivity<VM: BaseViewModel>: AppCompatActivity() {
     }
 
     protected open fun setupObservers() {
-        viewModel.messageStringId.observe(this, Observer {
 
-        })
     }
 
     private fun buildActivityComponent() =
