@@ -23,7 +23,7 @@ import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner.Silent::class)
-class MainActivityViewModelTest {
+class FactsViewModelTest {
 
     @get:Rule
     val rule = InstantTaskExecutorRule()
@@ -42,7 +42,7 @@ class MainActivityViewModelTest {
 
     private lateinit var testScheduler: TestScheduler
 
-    private lateinit var mainActivityViewModel: MainActivityViewModel
+    private lateinit var factsViewModel: FactsViewModel
 
     @Mock
     private lateinit var responseMaster: ResponseMaster
@@ -58,14 +58,14 @@ class MainActivityViewModelTest {
         testScheduler = TestScheduler()
         val testSchedulerProvider = TestSchedulerProvider(testScheduler)
         databaseService = Room.inMemoryDatabaseBuilder(context, DatabaseService::class.java).build()
-        mainActivityViewModel = MainActivityViewModel(
+        factsViewModel = FactsViewModel(
             testSchedulerProvider,
             compositeDisposable,
             networkHelper,
             factsRepository,
             databaseService
         )
-        mainActivityViewModel.responseData.observeForever(responseObserver)
+        factsViewModel.responseData.observeForever(responseObserver)
     }
 
     @Test
@@ -74,7 +74,7 @@ class MainActivityViewModelTest {
             .`when`(networkHelper).isNetworkConnected()
         doReturn(Single.just(responseMaster))
             .`when`(factsRepository).getFacts()
-        mainActivityViewModel.getFacts()
+        factsViewModel.getFacts()
         testScheduler.triggerActions()
         verify(responseObserver).onChanged(responseMaster)
     }
@@ -84,14 +84,14 @@ class MainActivityViewModelTest {
         doReturn(false)
             .`when`(networkHelper)
             .isNetworkConnected()
-        mainActivityViewModel.getFactsFromCache()
+        factsViewModel.getFactsFromCache()
         testScheduler.triggerActions()
         databaseService.factsDao().getAllFacts()
     }
 
     @After
     fun tearDown() {
-        mainActivityViewModel.responseData.removeObserver(responseObserver)
-        mainActivityViewModel.messageStringId.removeObserver(messageStringIdObserver)
+        factsViewModel.responseData.removeObserver(responseObserver)
+        factsViewModel.messageStringId.removeObserver(messageStringIdObserver)
     }
 }

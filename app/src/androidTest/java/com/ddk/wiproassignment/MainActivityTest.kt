@@ -11,9 +11,10 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import com.ddk.wiproassignment.data.ResponseMaster
+import com.ddk.wiproassignment.data.local.DatabaseService
 import com.ddk.wiproassignment.data.repositories.FactsRepository
 import com.ddk.wiproassignment.ui.main.MainActivity
-import com.ddk.wiproassignment.ui.main.MainActivityViewModel
+import com.ddk.wiproassignment.ui.main.FactsViewModel
 import com.ddk.wiproassignment.util.rx.TestSchedulerProviderUI
 import com.ddk.wiproassignment.utils.network.NetworkHelper
 import io.reactivex.disposables.CompositeDisposable
@@ -41,13 +42,16 @@ class MainActivityTest {
     private lateinit var factsRepository: FactsRepository
 
     @Mock
+    private lateinit var databaseService: DatabaseService
+
+    @Mock
     private lateinit var responseObserver: Observer<ResponseMaster>
 
     @Mock
     private lateinit var messageStringIdObserver: Observer<Int>
 
 
-    private lateinit var mainActivityViewModel: MainActivityViewModel
+    private lateinit var factsViewModel: FactsViewModel
 
     @Mock
     private lateinit var responseMaster: ResponseMaster
@@ -75,13 +79,13 @@ class MainActivityTest {
         val compositeDisposable = CompositeDisposable()
         testScheduler = TestScheduler()
         val testSchedulerProvider = TestSchedulerProviderUI(testScheduler)
-        mainActivityViewModel = MainActivityViewModel(
+        factsViewModel = FactsViewModel(
             testSchedulerProvider,
             compositeDisposable,
             networkHelper,
-            factsRepository
+            factsRepository,
+            databaseService
         )
-        activityRule.activity.viewModel = mainActivityViewModel
         verify(responseLiveData).observe(
             ArgumentMatchers.any(LifecycleOwner::class.java),
             responseCaptor.capture()

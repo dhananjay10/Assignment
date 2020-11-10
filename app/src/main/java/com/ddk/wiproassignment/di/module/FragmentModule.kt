@@ -3,10 +3,10 @@ package com.ddk.wiproassignment.di.module
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ddk.wiproassignment.adapter.FactsAdapter
-import com.ddk.wiproassignment.base.BaseActivity
+import com.ddk.wiproassignment.base.BaseFragment
 import com.ddk.wiproassignment.data.local.DatabaseService
 import com.ddk.wiproassignment.data.repositories.FactsRepository
-import com.ddk.wiproassignment.ui.main.MainActivityViewModel
+import com.ddk.wiproassignment.ui.main.FactsViewModel
 import com.ddk.wiproassignment.utils.ViewModelProviderFactory
 import com.ddk.wiproassignment.utils.network.NetworkHelper
 import com.ddk.wiproassignment.utils.rx.SchedulerProvider
@@ -15,10 +15,10 @@ import dagger.Provides
 import io.reactivex.disposables.CompositeDisposable
 
 @Module
-class ActivityModule(private val activity: BaseActivity<*>) {
+class FragmentModule(private val fragment: BaseFragment<*>) {
 
     @Provides
-    fun provideLinearLayoutManager(): LinearLayoutManager = LinearLayoutManager(activity)
+    fun provideLinearLayoutManager(): LinearLayoutManager = LinearLayoutManager(fragment.context)
 
     @Provides
     fun provideFactsAdapter(): FactsAdapter = FactsAdapter()
@@ -30,14 +30,14 @@ class ActivityModule(private val activity: BaseActivity<*>) {
         networkHelper: NetworkHelper,
         factsRepository: FactsRepository,
         databaseService: DatabaseService
-    ): MainActivityViewModel = ViewModelProviders.of(activity,
-        ViewModelProviderFactory(MainActivityViewModel::class) {
-            MainActivityViewModel(
+    ): FactsViewModel = ViewModelProviders.of(fragment,
+        ViewModelProviderFactory(FactsViewModel::class) {
+            FactsViewModel(
                 schedulerProvider,
                 compositeDisposable,
                 networkHelper,
                 factsRepository,
                 databaseService
             )
-        }).get(MainActivityViewModel::class.java)
+        }).get(FactsViewModel::class.java)
 }

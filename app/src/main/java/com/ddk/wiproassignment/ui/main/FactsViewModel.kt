@@ -10,7 +10,7 @@ import com.ddk.wiproassignment.utils.network.NetworkHelper
 import com.ddk.wiproassignment.utils.rx.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
 
-class MainActivityViewModel(
+class FactsViewModel(
     schedulerProvider: SchedulerProvider,
     compositeDisposable: CompositeDisposable,
     networkHelper: NetworkHelper,
