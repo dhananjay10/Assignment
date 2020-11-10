@@ -48,7 +48,7 @@ class MainActivity : BaseActivity<MainActivityViewModel>() {
             toolbar.setTitle(it.title)
             swipe_refresh_layout.isRefreshing = false
             factsAdapter.apply {
-                this.updateList(it.responseList)
+                this.updateList(it.responseList.filterNotNull())
                 notifyDataSetChanged()
             }
         })

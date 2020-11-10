@@ -23,7 +23,7 @@ class FactsAdapter : RecyclerView.Adapter<FactsViewHolder>() {
         holder.bindData(item)
     }
 
-    fun updateList(list: ArrayList<ResponseItem>) {
+    fun updateList(list: List<ResponseItem>) {
         responseList.clear()
         responseList.addAll(list)
     }
